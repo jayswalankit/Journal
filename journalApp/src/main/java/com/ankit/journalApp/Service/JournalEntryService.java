@@ -2,17 +2,16 @@ package com.ankit.journalApp.Service;
 
 import com.ankit.journalApp.Repo.JournalEntryRepo;
 import com.ankit.journalApp.entity.JournalEntry;
+import com.ankit.journalApp.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 public class JournalEntryService {
@@ -20,15 +19,26 @@ public class JournalEntryService {
     @Autowired
     JournalEntryRepo journalRepo;
 
+    @Autowired
+    UserService userService;
+
     ///  To create an Entry
 
-    public JournalEntry create(@RequestBody JournalEntry journalEntryCreate){
-      return   journalRepo.save(journalEntryCreate);
+    public void create( JournalEntry journalEntryCreate,String userName){
+        User user=userService.findByUserName(userName);
+        journalEntryCreate.setDate(LocalDateTime.now());
+        JournalEntry save = journalRepo.save(journalEntryCreate);
+        user.getJournalEntries().add(save);
+        userService.create(user);
+    }
+
+    public void create( JournalEntry journalEntryCreate){
+        journalRepo.save(journalEntryCreate);
     }
 
     ///  To get all journal enteries
 
-    @GetMapping
+
     public List<JournalEntry>journalEntryList(){
          return journalRepo.findAll();
     }
@@ -41,7 +51,10 @@ public class JournalEntryService {
 
     ///  Delete By id
 
-    public void deleteById(ObjectId id){
+    public void deleteById(ObjectId id, String userName){
+        User user=userService.findByUserName(userName);
+        user.getJournalEntries().removeIf(x->x.getId().equals(id));
+        userService.update(user);
      journalRepo.deleteById(id);
     }
 
