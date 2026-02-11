@@ -6,8 +6,7 @@ import com.ankit.journalApp.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,58 +16,79 @@ import java.util.Optional;
 public class JournalEntryService {
 
     @Autowired
-    JournalEntryRepo journalRepo;
+    private JournalEntryRepo journalRepo;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    ///  To create an Entry
+    // ✅ CREATE
+    @Transactional
+    public JournalEntry create(JournalEntry journalEntry, String userName) {
 
-    public void create( JournalEntry journalEntryCreate,String userName){
-        User user=userService.findByUserName(userName);
-        journalEntryCreate.setDate(LocalDateTime.now());
-        JournalEntry save = journalRepo.save(journalEntryCreate);
-        user.getJournalEntries().add(save);
-        userService.create(user);
+        User user = userService.findByUserName(userName);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        journalEntry.setDate(LocalDateTime.now());
+
+        JournalEntry saved = journalRepo.save(journalEntry);
+
+        user.getJournalEntries().add(saved);
+
+        userService.save(user); // No password encoding
+
+        return saved;
     }
 
-    public void create( JournalEntry journalEntryCreate){
-        journalRepo.save(journalEntryCreate);
+    // ✅ FIND BY ID
+    public Optional<JournalEntry> findById(ObjectId id) {
+        return journalRepo.findById(id);
     }
 
-    ///  To get all journal enteries
+    // ✅ UPDATE (Ownership safe)
+    @Transactional
+    public JournalEntry update(ObjectId id,
+                               JournalEntry newEntry,
+                               String userName) {
 
+        User user = userService.findByUserName(userName);
 
-    public List<JournalEntry>journalEntryList(){
-         return journalRepo.findAll();
+        boolean exists = user.getJournalEntries()
+                .stream()
+                .anyMatch(j -> j.getId().equals(id));
+
+        if (!exists) return null;
+
+        Optional<JournalEntry> optional = journalRepo.findById(id);
+
+        if (optional.isEmpty()) return null;
+
+        JournalEntry entry = optional.get();
+
+        if (newEntry.getTitle() != null)
+            entry.setTitle(newEntry.getTitle());
+
+        if (newEntry.getContent() != null)
+            entry.setContent(newEntry.getContent());
+
+        entry.setDate(LocalDateTime.now());
+
+        return journalRepo.save(entry);
     }
 
-    /// find by id...
-    public Optional<JournalEntry> findById(ObjectId id){
-        return journalRepo.findById(id)
-                .stream().findFirst();
+    // ✅ DELETE (Ownership safe)
+    @Transactional
+    public void deleteById(ObjectId id, String userName) {
+
+        User user = userService.findByUserName(userName);
+
+        user.getJournalEntries()
+                .removeIf(j -> j.getId().equals(id));
+
+        userService.save(user);
+
+        journalRepo.deleteById(id);
     }
-
-    ///  Delete By id
-
-    public void deleteById(ObjectId id, String userName){
-        User user=userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        userService.update(user);
-     journalRepo.deleteById(id);
-    }
-
-    ///  Update by Id
-    public  JournalEntry update( ObjectId id,JournalEntry updateEntry){
-
-        return  journalRepo.findById(id)
-              .stream()
-              .map(extingEntry->{extingEntry.setTitle(updateEntry.getTitle());
-               extingEntry.setContent(updateEntry.getContent());
-               extingEntry.setDate(LocalDateTime.now());
-              return  journalRepo.save(extingEntry);})
-                .findFirst().orElse(null);
-    }
-
-
 }
