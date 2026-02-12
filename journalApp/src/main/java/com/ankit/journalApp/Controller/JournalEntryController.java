@@ -24,7 +24,7 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
-    // 🔐 GET ALL
+   /// Get all journal of a particular user
     @GetMapping
     public ResponseEntity<?> getAllJournals() {
 
@@ -41,7 +41,7 @@ public class JournalEntryController {
         );
     }
 
-    // 🔐 GET BY ID
+    /// Get journal by id ....
     @GetMapping("/{id}")
     public ResponseEntity<?> getJournalById(
             @PathVariable ObjectId id) {
@@ -60,7 +60,7 @@ public class JournalEntryController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // 🔐 CREATE
+    /// cretaing a journal for a particular id ...
     @PostMapping
     public ResponseEntity<?> createJournal(
             @RequestBody JournalEntry entry) {
@@ -76,7 +76,7 @@ public class JournalEntryController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    // 🔐 UPDATE
+    /// Updating for particular id through id
     @PutMapping("/{id}")
     public ResponseEntity<?> updateJournal(
             @PathVariable ObjectId id,
@@ -96,7 +96,7 @@ public class JournalEntryController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    // 🔐 DELETE
+    //  Delete thorugh a particular id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJournal(
             @PathVariable ObjectId id) {

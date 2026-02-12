@@ -15,23 +15,25 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
 
+    /// Constructor dependency
     public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+  /// /- SecurityFilterChain ek bean banaya hai jo Spring Security ke filter rules define karta hai.
+  /// - HttpSecurity parameter ke through tum request authorization aur authentication rules set kar rahe ho.
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth            /// authorization config block hai yahi hum define karte hai ki kaunsa url endpoints kis tarah user ke liye accessible hai
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/journal/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())///  isme jab hum request bhejte hai to browser ya postman ek popup ya header ke through username/password bhejta hai ....
                 .build();
     }
 

@@ -18,7 +18,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder =
             new BCryptPasswordEncoder();
 
-    // 🔓 Create User (Public)
+ // for creating user
     public User createUser(User user) {
 
         user.setPassword(
@@ -30,12 +30,12 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    // 🔍 Find by username (Used in Auth + Journal)
+    //  Find by username
     public User findByUserName(String userName) {
         return userRepo.findByUserName(userName);
     }
 
-    // ✏️ Update logged-in user
+  ///  for updating username and password nt entries...
     public void updateUser(String userName, User updateEntry) {
 
         User existingUser = userRepo.findByUserName(userName);
@@ -57,12 +57,12 @@ public class UserService {
         userRepo.save(existingUser);
     }
 
-    // 💾 Internal save (No password encoding)
+  ///  user ke ander ke cheje like enteries jaisi chejo ko save karne ke liye hoti hai not for password and username
     public void save(User user) {
         userRepo.save(user);
     }
 
-    // ❌ Delete logged-in user
+
     public void deleteByUserName(String userName) {
         userRepo.deleteByUserName(userName);
     }

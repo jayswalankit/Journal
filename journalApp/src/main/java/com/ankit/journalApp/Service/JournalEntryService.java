@@ -21,7 +21,7 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
-    // ✅ CREATE
+    ///  for creating journal enteries
     @Transactional
     public JournalEntry create(JournalEntry journalEntry, String userName) {
 
@@ -42,12 +42,12 @@ public class JournalEntryService {
         return saved;
     }
 
-    // ✅ FIND BY ID
+
     public Optional<JournalEntry> findById(ObjectId id) {
         return journalRepo.findById(id);
     }
 
-    // ✅ UPDATE (Ownership safe)
+    ///  for updating particular journal of a particular id
     @Transactional
     public JournalEntry update(ObjectId id,
                                JournalEntry newEntry,
@@ -78,7 +78,8 @@ public class JournalEntryService {
         return journalRepo.save(entry);
     }
 
-    // ✅ DELETE (Ownership safe)
+
+    /// for deleting particular journal of a particular id
     @Transactional
     public void deleteById(ObjectId id, String userName) {
 
