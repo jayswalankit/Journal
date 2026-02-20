@@ -37,7 +37,7 @@ public class JournalEntryController {
 
         return new ResponseEntity<>(
                 user.getJournalEntries(),
-                HttpStatus.OK
+                HttpStatus.FOUND
         );
     }
 
@@ -56,7 +56,7 @@ public class JournalEntryController {
 
         return journal
                 .map(entry ->
-                        new ResponseEntity<>(entry, HttpStatus.OK))
+                        new ResponseEntity<>(entry, HttpStatus.FOUND))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -91,7 +91,7 @@ public class JournalEntryController {
                 journalService.update(id, entry, userName);
 
         if (updated == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

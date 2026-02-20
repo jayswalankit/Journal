@@ -3,7 +3,9 @@ package com.ankit.journalApp.Config;
 import com.ankit.journalApp.Service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,7 +32,8 @@ public class SecurityConfig {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/journal/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                      .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailsService)
                 .httpBasic(Customizer.withDefaults())///  isme jab hum request bhejte hai to browser ya postman ek popup ya header ke through username/password bhejta hai ....
@@ -40,5 +43,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

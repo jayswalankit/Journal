@@ -27,7 +27,7 @@ public class UserController {
 
         User user = userService.findByUserName(userName);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.FOUND);
     }
 
     //  Update Logged-in User

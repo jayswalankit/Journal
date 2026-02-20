@@ -30,6 +30,11 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    /// Get all users...
+     public List<User>userList(){
+         return userRepo.findAll();
+     }
+
     //  Find by username
     public User findByUserName(String userName) {
         return userRepo.findByUserName(userName);
@@ -65,5 +70,15 @@ public class UserService {
 
     public void deleteByUserName(String userName) {
         userRepo.deleteByUserName(userName);
+    }
+
+    public User saveAdmin(User user) {
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+
+        user.setRoles(List.of("USER","ADMIN"));
+
+        return  userRepo.save(user);
     }
 }
