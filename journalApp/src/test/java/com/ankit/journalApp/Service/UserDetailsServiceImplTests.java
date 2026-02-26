@@ -5,10 +5,12 @@ import com.ankit.journalApp.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,7 +20,7 @@ import java.util.List;
 
 import  static  org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceImplTests {
   @InjectMocks
     private UserDetailsServiceImpl userDetailsService;
@@ -26,10 +28,10 @@ public class UserDetailsServiceImplTests {
     @Mock
     private UserRepo userRepo;
 
-    @BeforeEach
-    void setUp(){
-        MockitoAnnotations.initMocks(this);
-    }
+//    @BeforeEach
+//    void setUp(){
+//        MockitoAnnotations.initMocks(this);
+//    } depricated///
     @Test
     void loadUserByUsernameTest(){
         User mockUser = new User();
@@ -45,4 +47,3 @@ public class UserDetailsServiceImplTests {
         Assertions.assertNotNull(user);
     }
 }
-//8:48
