@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /journal
+
+spring:
+  application:
+    name: JournalApp
+  data:
+    mongodb:
+      uri: mongodb+srv://jayswalankit94_db_user:jayswal@cluster1.8tbvlei.mongodb.net/JournalDb
+      database: JournalDb
+      auto-index-creation: true
