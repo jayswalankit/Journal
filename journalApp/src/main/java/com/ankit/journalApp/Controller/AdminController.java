@@ -13,11 +13,16 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private  UserService userService;
+
+    private final UserService userService;
+
+    public AdminController (UserService userService){
+        this.userService=userService;
+    }
+
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<?> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers(){
        List<User> all= userService.userList();
        if(all!=null&&!all.isEmpty()){
            return new ResponseEntity<>(all, HttpStatus.FOUND);

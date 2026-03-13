@@ -4,12 +4,15 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
+@Slf4j
 public class MongoConfig {
 
     // Properties file se URI utha raha hai
@@ -19,7 +22,7 @@ public class MongoConfig {
     @Bean
     public MongoClient mongoClient() {
         // Ye console me print karega taaki humein pata chale connection ban raha hai
-        System.out.println("🚀 INITIALIZING MONGODB CONNECTION WITH URI...");
+      log.info ("🚀 INITIALIZING MONGODB CONNECTION WITH URI...");
 
         ConnectionString connectionString = new ConnectionString(mongoUri);
 
