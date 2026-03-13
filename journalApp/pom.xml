@@ -21,6 +21,7 @@
 
     <properties>
         <java.version>21</java.version>
+            <sonar.organization>jayswalankit</sonar.organization>
     </properties>
 
     <dependencies>
