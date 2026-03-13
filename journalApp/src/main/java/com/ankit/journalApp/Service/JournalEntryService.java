@@ -4,6 +4,8 @@ import com.ankit.journalApp.Repo.JournalEntryRepo;
 import com.ankit.journalApp.entity.JournalEntry;
 import com.ankit.journalApp.entity.User;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,24 +24,33 @@ public class JournalEntryService {
     private UserService userService;
 
     ///  for creating journal enteries
+
+
     @Transactional
     public JournalEntry create(JournalEntry journalEntry, String userName) {
 
-        User user = userService.findByUserName(userName);
+        try {
+            User user = userService.findByUserName(userName);
 
-        if (user == null) {
-            throw new RuntimeException("User not found");
+            if (user == null) {
+                throw new RuntimeException("User not found");
+            }
+
+            journalEntry.setDate(LocalDateTime.now());
+
+            JournalEntry saved = journalRepo.save(journalEntry);
+
+            user.getJournalEntries().add(saved);
+
+            userService.save(user); // No password encoding
+
+            return saved;
         }
 
-        journalEntry.setDate(LocalDateTime.now());
+        catch (Exception e) {
+            throw new RuntimeException("An error occured while saving the entry " , e);
+        }
 
-        JournalEntry saved = journalRepo.save(journalEntry);
-
-        user.getJournalEntries().add(saved);
-
-        userService.save(user); // No password encoding
-
-        return saved;
     }
 
 
