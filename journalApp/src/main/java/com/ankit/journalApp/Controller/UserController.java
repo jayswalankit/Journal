@@ -1,6 +1,8 @@
 package com.ankit.journalApp.Controller;
 
 import com.ankit.journalApp.Service.UserService;
+import com.ankit.journalApp.Service.WeatherService;
+import com.ankit.journalApp.api.response.WeatherResponse;
 import com.ankit.journalApp.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WeatherService weatherService;
 
     //  Get Logged-in User
     @GetMapping
@@ -56,6 +61,21 @@ public class UserController {
         userService.deleteByUserName(userName);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        ///
+    }
+
+    @GetMapping("/greeting")
+    public ResponseEntity<?> greeting() {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weatherResponse= weatherService.getWeather("Mumbai");
+        String greeting="";
+        if(weatherResponse!=null){
+            greeting=" , Weather feels like "+ weatherResponse.getCurrent().getFeelslike();
+        }
+        return new ResponseEntity<>("Hi " + authentication.getName() + greeting ,HttpStatus.OK);
 
         ///
     }
