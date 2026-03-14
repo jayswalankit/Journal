@@ -14,7 +14,7 @@ target/
 .sts4-cache
 .yml
 !.github/workflows/build.yml
-.log
+*.log
 
 ### IntelliJ IDEA ###
 .idea
