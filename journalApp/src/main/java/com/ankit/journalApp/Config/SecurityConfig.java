@@ -28,7 +28,7 @@ public class SecurityConfig {
   /// - HttpSecurity parameter ke through tum request authorization aur authentication rules set kar rahe ho.
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth            /// authorization config block hai yahi hum define karte hai ki kaunsa url endpoints kis tarah user ke liye accessible hai
+                .authorizeHttpRequests(auth -> auth            /// authorization Config block hai yahi hum define karte hai ki kaunsa url endpoints kis tarah user ke liye accessible hai
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/journal/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
