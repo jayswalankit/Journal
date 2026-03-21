@@ -1,6 +1,7 @@
 package com.ankit.journalApp.Controller;
 
 import com.ankit.journalApp.Service.UserService;
+import com.ankit.journalApp.cache.AppCache;
 import com.ankit.journalApp.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class AdminController {
     public AdminController (UserService userService){
         this.userService=userService;
     }
+
+    @Autowired
+    private AppCache appCache;
 
 
     @GetMapping("/getAllUsers")
@@ -40,5 +44,8 @@ public class AdminController {
        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
    }
-
+   @GetMapping("clear-app-cache")
+   public void clearAppCache(){
+ appCache.init();
+   }
 }

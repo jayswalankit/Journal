@@ -11,3 +11,12 @@ spring:
       uri: mongodb+srv://jayswalankit94_db_user:jayswal@cluster1.8tbvlei.mongodb.net/JournalDb
       database: JournalDb
       auto-index-creation: true
+
+eleven:
+  api:
+    key: sk_03ab0ffb9590a67e507890d2b477826b86b71b987a01fd66
+    voice-id: hpp4J3VqNfWAUOO0d1Us
+
+weather:
+  api:
+    key: a21cdf8ae4e549e7c00fb16d7af8361d
