@@ -23,7 +23,7 @@ public class WeatherService {
     private AppCache appCache;
 
     public WeatherResponse getWeather(String city){
-    String finalAPI=appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY,apiKey);
+    String finalAPI=appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY,apiKey); // isme db se data nhi cache se aa rha hai ....
   ResponseEntity<WeatherResponse> response= restTemplate.exchange(finalAPI, HttpMethod.GET,null, com.ankit.journalApp.api.response.WeatherResponse.class);
   response.getStatusCode();
   WeatherResponse body=response.getBody();
