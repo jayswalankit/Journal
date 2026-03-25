@@ -12,6 +12,20 @@ spring:
       database: JournalDb
       auto-index-creation: true
 
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:  ${MAIL_USERNAME}
+    password:  ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 eleven:
   api:
     key: sk_03ab0ffb9590a67e507890d2b477826b86b71b987a01fd66
@@ -20,3 +34,6 @@ eleven:
 weather:
   api:
     key: a21cdf8ae4e549e7c00fb16d7af8361d
+
+
+
