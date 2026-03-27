@@ -29,6 +29,11 @@ public class UserRepoImpl {
         List<User> users = mongoTemplate.find(query, User.class);
         System.out.println("All users: " + users.size());
         System.out.println("Users size: " + users.size());
+        List<String> emails = users.stream()
+                .map(User::getEmail)
+                .toList();
+
+        System.out.println("Emails: " + emails);
         return users;
     }
 }
