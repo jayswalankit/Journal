@@ -32,7 +32,7 @@ public class UserService {
         try{
             user.setPassword(
                     passwordEncoder.encode(user.getPassword())
-            );
+            ); /// password hash ho gaya
 
             user.setRoles(List.of("USER"));
 

@@ -6,6 +6,11 @@ server:
 spring:
   application:
     name: JournalApp
+
+  redis :
+    host : localhost
+    port : 6379
+
   data:
     mongodb:
       uri: mongodb+srv://jayswalankit94_db_user:jayswal@cluster1.8tbvlei.mongodb.net/JournalDb
